@@ -33,7 +33,7 @@ export default function PanelLayout({
             <html lang="en">
                 <body className={`${poppinsSans} antialiased`}>
                     <div className="border-b border-base-300 sticky top-0 z-50">
-                        <div className="max w-screen-xl mx-auto">
+                        <div className="max-w-screen-xl mx-auto">
                             <Navbar fluid rounded>
                                 <Navbar.Brand href="/">
                                     <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo"/>
