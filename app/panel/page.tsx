@@ -1,6 +1,34 @@
 'use client';
 
+import React, { useEffect, useState } from "react";
+import { getTotalAdmins, getTotalCategories, getTotalProducts } from "./api/dashboard";
+
 export default function Dashboard() {
+    const [admin, setAdmin] = useState(0);
+    const [category, setCategory] = useState(0);
+    const [product, setProduct] = useState(0);
+
+    const fetchAdmin = async () => {
+        const totalAdmins = await getTotalAdmins();
+        setAdmin(totalAdmins);
+    }
+
+    const fetchCategory = async () => {
+        const totalCategories = await getTotalCategories();
+        setCategory(totalCategories);
+    }
+
+    const fetchProduct = async () => {
+        const totalProducts = await getTotalProducts();
+        setProduct(totalProducts);
+    }
+
+    useEffect(() => {
+        fetchAdmin();
+        fetchCategory();
+        fetchProduct();
+    }, []);
+
     return (
         <div>
             <div className="text-center flex items-center flex-col mt-5 mb-10">
@@ -10,15 +38,15 @@ export default function Dashboard() {
             </div>
             <div className="grid grid-cols-3 gap-6">
                 <div className="sm:col-span-1 col-span-3 p-4 rounded shadow">
-                    <div className="text-2xl font-semibold mb-2">10</div>
+                    <div className="text-2xl font-semibold mb-2">{product}</div>
                     <p className="mb-0 text-sm">Total Products</p>
                 </div>
                 <div className="sm:col-span-1 col-span-3 p-4 rounded shadow">
-                    <div className="text-2xl font-semibold mb-2">5</div>
+                    <div className="text-2xl font-semibold mb-2">{category}</div>
                     <p className="mb-0 text-sm">Total Categories</p>
                 </div>
                 <div className="sm:col-span-1 col-span-3 p-4 rounded shadow">
-                    <div className="text-2xl font-semibold mb-2">15</div>
+                    <div className="text-2xl font-semibold mb-2">{admin}</div>
                     <p className="mb-0 text-sm">Total Admins</p>
                 </div>
             </div>
