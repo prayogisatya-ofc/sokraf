@@ -38,7 +38,7 @@ export default function Admins() {
 	
 	return (
 		<div>
-			<Breadcrumb aria-label="Default breadcrumb example" className="mt-3 mb-5">
+			<Breadcrumb aria-label="Default breadcrumb example" className="mt-5 mb-5">
 				<BreadcrumbItem href="/panel" icon={HiHome}>
 					<Link href="/panel">
 						Dashboard

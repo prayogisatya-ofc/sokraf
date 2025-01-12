@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { getTotalAdmins, getTotalCategories, getTotalProducts } from "./api/dashboard";
+import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
     const [admin, setAdmin] = useState(0);
     const [category, setCategory] = useState(0);
     const [product, setProduct] = useState(0);
+    const { data: session } = useSession();
 
     const fetchAdmin = async () => {
         const totalAdmins = await getTotalAdmins();
@@ -30,10 +32,10 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <div>
+        <div className="pt-2">
             <div className="text-center flex items-center flex-col mt-5 mb-10">
                 <img src="/logo.svg" className="h-12 mb-3" alt="Sokraf Logo" />
-                <h3 className="text-lg font-medium mb-3">Welcome, Aspita Fitri</h3>
+                <h3 className="text-lg font-medium mb-3">Welcome, {session?.user?.name}</h3>
                 <h1 className="text-5xl font-bold">SO<span className="text-primary-700">KRAF</span> PANEL</h1>
             </div>
             <div className="grid grid-cols-3 gap-6">
