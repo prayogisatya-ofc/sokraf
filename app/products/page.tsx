@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../api/products";
+import { Select, TextInput } from "flowbite-react";
 
 export default function Products() {
     const [products, setProducts] = useState({});
@@ -29,6 +30,14 @@ export default function Products() {
                 <div className="mx-auto max-w-screen-xl">
                     <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                         <h2 className="mt-3 text-xl font-medium sm:text-2xl">Products</h2>
+                        <form>
+                            <div className="flex text-nowrap gap-3">
+                                <Select>
+                                    <option value="">All categories</option>
+                                </Select>
+                                <TextInput type="search" placeholder="Search products..." />
+                            </div>
+                        </form>
                     </div>
                     <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
                         {Object.values(products)?.map((product: any) => (
