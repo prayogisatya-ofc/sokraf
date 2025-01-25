@@ -4,18 +4,51 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../api/products";
 import { Select, TextInput } from "flowbite-react";
+import { getAllCategories } from "../panel/api/categories";
 
 export default function Products() {
     const [products, setProducts] = useState({});
+    const [categories, setCategories] = useState({});
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [filteredProducts, setFilteredProducts] = useState({});
 
     const fetchProducts = async () => {
         const products = await getAllProducts();
         setProducts(products);
     }
 
+    const fetchCategories = async () => {
+        const categories = await getAllCategories();
+        setCategories(categories);
+    }
+
+    const filterProducts = () => {
+        let tempProducts = Object.values(products);
+
+        if (selectedCategory) {
+            tempProducts = tempProducts.filter(
+                (product: any) => product.categoryId === Number(selectedCategory)
+            );
+        }
+
+        if (searchKeyword) {
+            tempProducts = tempProducts.filter(
+                (product: any) => product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+            );
+        }
+
+        setFilteredProducts(tempProducts);
+    }
+
     useEffect(() => {
         fetchProducts();
+        fetchCategories();
     }, []);
+
+    useEffect(() => {
+        filterProducts();
+    }, [products, selectedCategory, searchKeyword]);
 
     function formatRupiah(angka: number): string {
         if (isNaN(angka)) {
@@ -32,15 +65,18 @@ export default function Products() {
                         <h2 className="mt-3 text-xl font-medium sm:text-2xl">Products</h2>
                         <form>
                             <div className="flex text-nowrap gap-3">
-                                <Select>
+                                <Select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
                                     <option value="">All categories</option>
+                                    {Object.values(categories)?.map((category: any) => (
+                                        <option key={category.id} value={category.id}>{category.name}</option>
+                                    ))}
                                 </Select>
-                                <TextInput type="search" placeholder="Search products..." />
+                                <TextInput type="search" placeholder="Search products..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
                             </div>
                         </form>
                     </div>
                     <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-                        {Object.values(products)?.map((product: any) => (
+                        {Object.values(filteredProducts)?.map((product: any) => (
                             <div key={product.id} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                 <div className="h-56 w-full">
                                     <Link href={`/products/${product.slug}`}>
